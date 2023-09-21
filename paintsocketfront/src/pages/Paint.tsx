@@ -97,6 +97,21 @@ export default function Paint() {
           selectedShape={selectedShape}
           setSelectedShape={setSelectedShape}
         />
+        <PaintShape
+          shape="➤"
+          selectedShape={selectedShape}
+          setSelectedShape={setSelectedShape}
+        />
+        <PaintShape
+          shape="✻"
+          selectedShape={selectedShape}
+          setSelectedShape={setSelectedShape}
+        />
+        <PaintShape
+          shape="♜"
+          selectedShape={selectedShape}
+          setSelectedShape={setSelectedShape}
+        />
       </div>
       <div className="erasercontainer" onClick={removelastchange}>
         <Svg
