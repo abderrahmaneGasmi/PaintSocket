@@ -203,19 +203,44 @@ function PaintCanva({
   const { emit, newpainted }: any = useSocket();
 
   useEffect(() => {
-    console.log(newpainted);
-
     if (!newpainted.color) return;
-    const color = newpainted.color;
-    const elem = document.createElement("div");
-    elem.classList.add("point");
-    elem.style.color = color;
-    elem.appendChild(document.createTextNode(newpainted.shape));
-    elem.style.left = `${newpainted.position.x1}px`;
-    elem.style.top = `${newpainted.position.y1}px`;
-    elem.id = `x1: ${newpainted.position.x1} , y1: ${newpainted.position.y1}`;
     const canvahtml = canva.current as unknown as HTMLElement;
-    canvahtml.appendChild(elem);
+
+    if (newpainted.type === "painted") {
+      const color = newpainted.color;
+      const elem = document.createElement("div");
+      elem.classList.add("point");
+      elem.style.color = color;
+      elem.appendChild(document.createTextNode(newpainted.shape));
+      elem.style.left = `${newpainted.position.x1}px`;
+      elem.style.top = `${newpainted.position.y1}px`;
+      elem.id = `x1: ${newpainted.position.x1} , y1: ${newpainted.position.y1}`;
+      canvahtml.appendChild(elem);
+    } else {
+      let lastElem = canvahtml.children[
+        canvahtml.children.length - 1
+      ] as HTMLElement;
+      if (
+        lastElem.id ===
+        `x1: ${newpainted.position.x1} , y1: ${newpainted.position.y1}`
+      ) {
+        lastElem.style.color = newpainted.color;
+        lastElem.innerHTML = newpainted.shape;
+        return;
+      }
+      console.log("no");
+      lastElem = canvahtml.children[
+        canvahtml.children.length - 2
+      ] as HTMLElement;
+      if (
+        lastElem.id ===
+        `x1: ${newpainted.position.x1} , y1: ${newpainted.position.y1}`
+      ) {
+        lastElem.style.color = selectedColor;
+        lastElem.innerHTML = selectedShape;
+        return;
+      }
+    }
   }, [newpainted]);
 
   const paintevent = (e: MouseEvent) => {
@@ -238,6 +263,12 @@ function PaintCanva({
       if (lastElem.id === cord) {
         lastElem.style.color = selectedColor;
         lastElem.innerHTML = selectedShape;
+        emit("replace", {
+          color: selectedColor,
+          shape: selectedShape,
+          position: { x1, y1 },
+          type: "replaced",
+        });
         return;
       }
     }
@@ -250,7 +281,12 @@ function PaintCanva({
     elem.style.left = `${x1}px`;
     elem.style.top = `${y1}px`;
     elem.id = cord;
-    emit("paint", { color, shape: selectedShape, position: { x1, y1 } });
+    emit("paint", {
+      color,
+      shape: selectedShape,
+      position: { x1, y1 },
+      type: "painted",
+    });
 
     canvahtml.appendChild(elem);
     setLastchanges((lastchanges) => {

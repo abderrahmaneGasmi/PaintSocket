@@ -16,6 +16,7 @@ type Painted = {
     x1: number;
     y1: number;
   };
+  type: "painted" | "replaced";
 };
 export const SocketContext = createContext<SocketContextProps | null>(null);
 
@@ -34,6 +35,12 @@ export default function SocketProvider({ children }: SocketProviderType) {
       if (data.id === socket.id) return;
       setNewpainted(data.data);
     });
+    socket.on("userreplaced", (data: any) => {
+      if (!socket) return;
+      if (data.id === socket.id) return;
+      setNewpainted(data.data);
+    });
+
     socket.on("disconnect", () => {
       console.log("disconnected");
     });

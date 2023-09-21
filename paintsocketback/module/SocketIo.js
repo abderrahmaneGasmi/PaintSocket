@@ -17,10 +17,13 @@ function initializeSocket(server) {
     io.emit("new", `new user connected ${socket.id}`);
 
     socket.on("paint", (data) => {
-      console.log("user painted");
+      console.log("user painted", data);
       io.emit("userpainted", { data: data, id: socket.id });
     });
-
+    socket.on("replace", (data) => {
+      console.log("user replaced", data);
+      io.emit("userreplaced", { data: data, id: socket.id });
+    });
     socket.on("disconnect", () => {
       console.log("user disconnected");
       connectedUsers.splice(
