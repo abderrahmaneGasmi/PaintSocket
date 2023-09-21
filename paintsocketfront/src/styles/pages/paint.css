@@ -1,0 +1,67 @@
+.paintpage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  background-color: rgb(224, 196, 250);
+  padding: 2rem;
+}
+.paintTitle {
+  font-size: 3rem;
+  font-weight: 700;
+  color: rgb(255, 255, 255);
+  text-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.2);
+}
+.paintcanva {
+  width: 80rem;
+  height: 50rem;
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 0 0 1rem 0.5rem rgba(0, 0, 0, 0.2);
+  margin: 2rem 0;
+  position: relative;
+  padding: 1rem;
+  overflow: hidden;
+  user-select: none;
+}
+.paintcolors {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 2rem;
+}
+.paintshapes {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 2rem;
+}
+.paintcolor {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.paintshape {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+}
+.point {
+  width: 1.5rem;
+  height: 0.5rem;
+  /* border-radius: 50%; */
+  position: absolute;
+  font-size: 1.5rem;
+}
+.heart {
+  position: absolute;
+  width: 1.5rem;
+  height: 1.2rem;
+}
