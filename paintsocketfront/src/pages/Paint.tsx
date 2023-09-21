@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import "../styles/pages/paint.css";
+import { useSocket } from "../hooks/useSocket";
+
 export default function Paint() {
   const [selectedColor, setSelectedColor] = useState("#F57170");
   const [selectedShape, setSelectedShape] = useState("♥");
   const [lastchanges, setLastchanges] = useState([] as number[][]);
+  const { emit }: any = useSocket();
 
   const removelastchange = () => {
     if (lastchanges.length === 0) return;
@@ -49,115 +52,116 @@ export default function Paint() {
         repeatType: "reverse",
       }}
     >
-      <div className="paintTitle">Paint Socket</div>
-      <div className="paintshapes">
-        <PaintShape
-          shape="♥"
-          selectedShape={selectedShape}
-          setSelectedShape={setSelectedShape}
-        />
-        <PaintShape
-          shape="▲"
-          selectedShape={selectedShape}
-          setSelectedShape={setSelectedShape}
-        />
-        <PaintShape
-          shape="◆"
-          selectedShape={selectedShape}
-          setSelectedShape={setSelectedShape}
-        />
+      <div className="paintpage__container">
+        <div className="paintTitle">Paint Socket</div>
+        <div className="paintshapes">
+          <PaintShape
+            shape="♥"
+            selectedShape={selectedShape}
+            setSelectedShape={setSelectedShape}
+          />
+          <PaintShape
+            shape="▲"
+            selectedShape={selectedShape}
+            setSelectedShape={setSelectedShape}
+          />
+          <PaintShape
+            shape="◆"
+            selectedShape={selectedShape}
+            setSelectedShape={setSelectedShape}
+          />
 
-        <PaintShape
-          shape="◼"
-          selectedShape={selectedShape}
-          setSelectedShape={setSelectedShape}
-        />
-        <PaintShape
-          shape="○"
-          selectedShape={selectedShape}
-          setSelectedShape={setSelectedShape}
-        />
-        <PaintShape
-          shape="●"
-          selectedShape={selectedShape}
-          setSelectedShape={setSelectedShape}
-        />
-        <PaintShape
-          shape="♧"
-          selectedShape={selectedShape}
-          setSelectedShape={setSelectedShape}
-        />
-        <PaintShape
-          shape="🔥"
-          selectedShape={selectedShape}
-          setSelectedShape={setSelectedShape}
-        />
-        <PaintShape
-          shape="◍"
-          selectedShape={selectedShape}
-          setSelectedShape={setSelectedShape}
-        />
-        <PaintShape
-          shape="➤"
-          selectedShape={selectedShape}
-          setSelectedShape={setSelectedShape}
-        />
-        <PaintShape
-          shape="✻"
-          selectedShape={selectedShape}
-          setSelectedShape={setSelectedShape}
-        />
-        <PaintShape
-          shape="♜"
-          selectedShape={selectedShape}
-          setSelectedShape={setSelectedShape}
-        />
-      </div>
-      <div className="erasercontainer" onClick={removelastchange}>
-        <Svg
-          path="M16.998 4.18l-3.154-2.425c-0.872-0.671-2.135-0.506-2.807 0.365l-8.4 10.897c-0.671 0.871-0.507 2.132 0.365 2.803l3.153 2.425c0.872 0.671 2.135 0.506 2.807-0.365l8.401-10.897c0.671-0.871 0.507-2.132-0.365-2.803zM8.548 16.467l-0.537 0.681c-0.152 0.197-0.385 0.31-0.639 0.31-0.124 0-0.309-0.029-0.485-0.164l-3.153-2.425c-0.168-0.129-0.275-0.317-0.303-0.53s0.028-0.422 0.157-0.589l0.537-0.681c0.152-0.197 0.385-0.311 0.64-0.311 0.124 0 0.309 0.029 0.485 0.164l3.154 2.425c0.168 0.129 0.275 0.317 0.303 0.53 0.026 0.213-0.030 0.422-0.159 0.59z"
-          classname="eraser"
-          viewbox="0 0 20 20"
-        />
-      </div>
-
-      <PaintCanva
-        selectedColor={selectedColor}
-        selectedShape={selectedShape}
-        lastchanges={lastchanges}
-        setLastchanges={setLastchanges}
-      />
-      <div className="paintcolors">
-        <PaintColor
-          color="#F57170"
+          <PaintShape
+            shape="◼"
+            selectedShape={selectedShape}
+            setSelectedShape={setSelectedShape}
+          />
+          <PaintShape
+            shape="○"
+            selectedShape={selectedShape}
+            setSelectedShape={setSelectedShape}
+          />
+          <PaintShape
+            shape="●"
+            selectedShape={selectedShape}
+            setSelectedShape={setSelectedShape}
+          />
+          <PaintShape
+            shape="♧"
+            selectedShape={selectedShape}
+            setSelectedShape={setSelectedShape}
+          />
+          <PaintShape
+            shape="🔥"
+            selectedShape={selectedShape}
+            setSelectedShape={setSelectedShape}
+          />
+          <PaintShape
+            shape="◍"
+            selectedShape={selectedShape}
+            setSelectedShape={setSelectedShape}
+          />
+          <PaintShape
+            shape="➤"
+            selectedShape={selectedShape}
+            setSelectedShape={setSelectedShape}
+          />
+          <PaintShape
+            shape="✻"
+            selectedShape={selectedShape}
+            setSelectedShape={setSelectedShape}
+          />
+          <PaintShape
+            shape="♜"
+            selectedShape={selectedShape}
+            setSelectedShape={setSelectedShape}
+          />
+        </div>
+        <div className="erasercontainer" onClick={removelastchange}>
+          <Svg
+            path="M16.998 4.18l-3.154-2.425c-0.872-0.671-2.135-0.506-2.807 0.365l-8.4 10.897c-0.671 0.871-0.507 2.132 0.365 2.803l3.153 2.425c0.872 0.671 2.135 0.506 2.807-0.365l8.401-10.897c0.671-0.871 0.507-2.132-0.365-2.803zM8.548 16.467l-0.537 0.681c-0.152 0.197-0.385 0.31-0.639 0.31-0.124 0-0.309-0.029-0.485-0.164l-3.153-2.425c-0.168-0.129-0.275-0.317-0.303-0.53s0.028-0.422 0.157-0.589l0.537-0.681c0.152-0.197 0.385-0.311 0.64-0.311 0.124 0 0.309 0.029 0.485 0.164l3.154 2.425c0.168 0.129 0.275 0.317 0.303 0.53 0.026 0.213-0.030 0.422-0.159 0.59z"
+            classname="eraser"
+            viewbox="0 0 20 20"
+          />
+        </div>
+        <PaintCanva
           selectedColor={selectedColor}
-          setSelectedColor={setSelectedColor}
+          selectedShape={selectedShape}
+          lastchanges={lastchanges}
+          setLastchanges={setLastchanges}
         />
-        <PaintColor
-          color="#3490DE"
-          selectedColor={selectedColor}
-          setSelectedColor={setSelectedColor}
-        />
-        <PaintColor
-          color="#15B7B9"
-          selectedColor={selectedColor}
-          setSelectedColor={setSelectedColor}
-        />
-        <PaintColor
-          color="#A1CCD1"
-          selectedColor={selectedColor}
-          setSelectedColor={setSelectedColor}
-        />
-        <PaintColor
-          color="#E25E3E"
-          selectedColor={selectedColor}
-          setSelectedColor={setSelectedColor}
-        />
-        <PaintColor
-          color="#F2C94C"
-          selectedColor={selectedColor}
-          setSelectedColor={setSelectedColor}
-        />
+        <div className="paintcolors">
+          <PaintColor
+            color="#F57170"
+            selectedColor={selectedColor}
+            setSelectedColor={setSelectedColor}
+          />
+          <PaintColor
+            color="#3490DE"
+            selectedColor={selectedColor}
+            setSelectedColor={setSelectedColor}
+          />
+          <PaintColor
+            color="#15B7B9"
+            selectedColor={selectedColor}
+            setSelectedColor={setSelectedColor}
+          />
+          <PaintColor
+            color="#A1CCD1"
+            selectedColor={selectedColor}
+            setSelectedColor={setSelectedColor}
+          />
+          <PaintColor
+            color="#E25E3E"
+            selectedColor={selectedColor}
+            setSelectedColor={setSelectedColor}
+          />
+          <PaintColor
+            color="#F2C94C"
+            selectedColor={selectedColor}
+            setSelectedColor={setSelectedColor}
+          />
+        </div>
       </div>
     </motion.div>
   );
@@ -196,6 +200,23 @@ function PaintCanva({
 }) {
   const canva = React.useRef<HTMLDivElement | null>(null);
   const painteventRef = React.useRef<(e: MouseEvent) => void>();
+  const { emit, newpainted }: any = useSocket();
+
+  useEffect(() => {
+    console.log(newpainted);
+
+    if (!newpainted.color) return;
+    const color = newpainted.color;
+    const elem = document.createElement("div");
+    elem.classList.add("point");
+    elem.style.color = color;
+    elem.appendChild(document.createTextNode(newpainted.shape));
+    elem.style.left = `${newpainted.position.x1}px`;
+    elem.style.top = `${newpainted.position.y1}px`;
+    elem.id = `x1: ${newpainted.position.x1} , y1: ${newpainted.position.y1}`;
+    const canvahtml = canva.current as unknown as HTMLElement;
+    canvahtml.appendChild(elem);
+  }, [newpainted]);
 
   const paintevent = (e: MouseEvent) => {
     const canvahtml = canva.current as unknown as HTMLElement;
@@ -229,6 +250,8 @@ function PaintCanva({
     elem.style.left = `${x1}px`;
     elem.style.top = `${y1}px`;
     elem.id = cord;
+    emit("paint", { color, shape: selectedShape, position: { x1, y1 } });
+
     canvahtml.appendChild(elem);
     setLastchanges((lastchanges) => {
       lastchanges[lastchanges.length - 1].push(canvahtml.children.length - 1);

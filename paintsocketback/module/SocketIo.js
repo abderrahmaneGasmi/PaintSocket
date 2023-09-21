@@ -1,4 +1,5 @@
 const socketIO = require("socket.io");
+const connectedUsers = require("./ConnectedUsers");
 function initializeSocket(server) {
   // Create the socket instance
   const io = socketIO(server, {
@@ -11,35 +12,22 @@ function initializeSocket(server) {
   // Event handler for new socket connections
   io.on("connection", (socket) => {
     // socket.on("like", async (data) => {
-    //   console.log("like event");
+    connectedUsers.push({ id: socket.id });
+    // // Emit the event to all connected sockets
+    io.emit("new", `new user connected ${socket.id}`);
 
-    //   let username = data.workername;
-    //   let notificationid = data.notificationid;
-    //   let tuser = await User.findById(userId);
-    //   if (!tuser) return;
-    //   console.log("return 1");
-    //   let user = await User.findOne({ username: username });
-    //   if (!user) return;
-    //   console.log("return 2");
-    //   let userSocketId = connectedUsers.find(
-    //     (users) => users.id == user._id.toString()
-    //   );
-    //   if (!userSocketId) return;
-    //   console.log("return 3");
-    //   io.to(userSocketId.socketId).emit("notification", {
-    //     avatar: tuser.avatar,
-    //     username: tuser.username,
-    //     type: "like",
-    //     notificationid,
-    //   });
-    // });
+    socket.on("paint", (data) => {
+      console.log("user painted");
+      io.emit("userpainted", { data: data, id: socket.id });
+    });
 
     socket.on("disconnect", () => {
       console.log("user disconnected");
       connectedUsers.splice(
-        connectedUsers.findIndex((user) => user.id == userId),
+        connectedUsers.findIndex((user) => user.id === socket.id),
         1
       );
+      io.emit("new", `user disconnected ${socket.id}`);
     });
   });
 

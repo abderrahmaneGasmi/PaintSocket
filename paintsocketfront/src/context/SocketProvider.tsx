@@ -1,45 +1,56 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { createContext, useState, useEffect } from "react";
-import io from "socket.io-client";
+import { socket } from "../model/socketio";
 
 interface SocketContextProps {
   emit: (event: string, data: any) => void;
+  newpainted: Painted;
 }
 interface SocketProviderType {
   children: React.ReactNode;
 }
+type Painted = {
+  color: string;
+  shape: string;
+  position: {
+    x1: number;
+    y1: number;
+  };
+};
 export const SocketContext = createContext<SocketContextProps | null>(null);
 
 export default function SocketProvider({ children }: SocketProviderType) {
-  const [socket, setSocket] = useState<any>(null);
   //   const socket = io("http://localhost:1111");
-
+  const [newpainted, setNewpainted] = useState({} as Painted);
   useEffect(() => {
-    const newSocket = io("http://localhost:1111");
-
-    newSocket.on("connect", () => {
+    socket.on("connect", () => {
       console.log("connected");
     });
-    newSocket.on("allUsers", (data) => {
+    socket.on("new", (data) => {
       console.log(data);
     });
-    newSocket.on("disconnect", () => {
+    socket.on("userpainted", (data: any) => {
+      if (!socket) return;
+      if (data.id === socket.id) return;
+      setNewpainted(data.data);
+    });
+    socket.on("disconnect", () => {
       console.log("disconnected");
     });
-    setSocket(newSocket);
     return () => {
-      // newSocket.close();
+      socket.close();
     };
   }, []);
 
   const emit = (event: string, data: any) => {
+    if (!socket) return;
+    console.log(socket);
     if (!socket.connected) {
       console.log("socket not connected ");
       return;
     }
 
     console.log("emitting " + event);
-    console.log(socket);
     socket.emit(event, data);
   };
 
@@ -47,6 +58,7 @@ export default function SocketProvider({ children }: SocketProviderType) {
     <SocketContext.Provider
       value={{
         emit,
+        newpainted,
       }}
     >
       {children}
